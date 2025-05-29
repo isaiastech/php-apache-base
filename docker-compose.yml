@@ -1,41 +1,40 @@
-version: '3.8'
+version: '3.8'  # Versão do Docker Compose
 
 services:
   apache:
-    build: .
+    build: .  # Constrói o container usando o Dockerfile local
     container_name: php-apache
     volumes:
-      - ./site:/var/www/html
-      - ./php.ini:/usr/local/etc/php/php.ini
+      - ./production:/var/www/html  # Código da aplicação PHP
+      - ./php.ini:/usr/local/etc/php/php.ini  # Configuração personalizada do PHP
     ports:
-      - "8080:80"
+      - "8000:80"  # Porta local 8000 acessa o Apache (porta 80) no container
     depends_on:
-      - db
+      - db  # Aguarda o banco de dados iniciar
 
   db:
-    image: mysql:5.7
+    image: mysql:5.7  # Usando imagem oficial do MySQL 5.7
     container_name: mysql-db
-    restart: always
+    restart: always  # Reinicia automaticamente se algo falhar
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: developer
-      MYSQL_USER: user
-      MYSQL_PASSWORD: senha
+      MYSQL_ROOT_PASSWORD: root  # Senha do usuário root do MySQL
+      MYSQL_DATABASE: meu_banco  # Nome do banco de dados a ser criado
+      MYSQL_USER: user  # Nome de usuário adicional
+      MYSQL_PASSWORD: senha  # Senha do usuário adicional
     ports:
-      - "3306:3306"
+      - "3306:3306"  # Porta local 3306 conectando ao MySQL
     volumes:
-      - dbdata:/var/lib/mysql
-      - ./init:/docker-entrypoint-initdb.d
+      - dbdata:/var/lib/mysql  # Volume para persistência de dados
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin/phpmyadmin  # Interface web para o MySQL
     container_name: phpmyadmin
     restart: always
     ports:
-      - "8081:80"
+      - "8081:80"  # Acesse phpMyAdmin via http://localhost:8081
     environment:
-      PMA_HOST: db
+      PMA_HOST: db  # Conecta ao serviço "db" (MySQL)
       MYSQL_ROOT_PASSWORD: root
 
 volumes:
-  dbdata:
+  dbdata:  # Volume nomeado para manter os dados do banco mesmo após reiniciar containers
