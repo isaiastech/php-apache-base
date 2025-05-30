@@ -49,8 +49,17 @@ Depois use a imagem no `docker-compose.yml`:
 ```yaml
 image: seu-usuario/php-apache-base:8.3
 ```
+✅ Soluções para corrigir as permissões da pasta production
+🔧 1. Ajustar permissões no host (fora do container)
+Se a pasta foi criada com root, você pode ajustar manualmente com:
+
+sudo chown -R $USER:$USER ./production
+Ou, se quiser dar permissão total (não recomendado para produção):
+
+sudo chmod -R 777 ./public
 
 ✅ Passos para rodar
+
 Crie esse docker-compose.yml na raiz do projeto.
 
 Execute no terminal:

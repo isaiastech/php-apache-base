@@ -1,11 +1,11 @@
-version: '3.8'  # Versão do Docker Compose
 
 services:
   apache:
+    image: isaiaspy/php-apache-base  # Usando imagem oficial do PHP com Apache
     build: .  # Constrói o container usando o Dockerfile local
     container_name: php-apache
     volumes:
-      - ./production:/var/www/html  # Código da aplicação PHP
+      - ./public:/var/www/html  # Código da aplicação PHP
       - ./php.ini:/usr/local/etc/php/php.ini  # Configuração personalizada do PHP
     ports:
       - "8000:80"  # Porta local 8000 acessa o Apache (porta 80) no container
@@ -22,7 +22,8 @@ services:
       MYSQL_USER: user  # Nome de usuário adicional
       MYSQL_PASSWORD: senha  # Senha do usuário adicional
     ports:
-      - "3306:3306"  # Porta local 3306 conectando ao MySQL
+      - "3307:3306"
+  # Porta local 3306 conectando ao MySQL
     volumes:
       - dbdata:/var/lib/mysql  # Volume para persistência de dados
 
