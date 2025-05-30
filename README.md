@@ -1,74 +1,99 @@
-# php-apache-base
+# Ambiente PHP com Docker
 
-Imagem base personalizada com PHP 8.3 + Apache, ideal para projetos PHP modernos com MySQL.
+Este projeto configura um ambiente de desenvolvimento PHP completo utilizando Docker, incluindo:
 
-## Recursos
-- PHP 8.3
-- Apache com mod_rewrite ativado
-- Extensões mysqli, PDO, pdo_mysql
-- `php.ini` configurado para desenvolvimento
+- PHP 8.2 + Apache
+- MySQL 5.7
+- phpMyAdmin
 
-## Como usar
+---
 
-1. Clone este repositório:
+## 📦 Serviços
 
-```bash
-git clone https://github.com/seu-usuario/php-apache-base.git
-```
+### 🧰 PHP + Apache
+- Localhost: `http://localhost:8080`
+- Código-fonte na pasta `/src`
 
-2. Em seu projeto, adicione o seguinte ao `docker-compose.yml`:
+### 🐬 MySQL
+- Porta: `3307`
+- Banco: `meu_banco`
+- Usuário: `user`
+- Senha: `senha`
 
-```yaml
-services:
-  apache:
-    build:
-      context: .
-      dockerfile: ../php-apache-base/Dockerfile
-    volumes:
-      - ./meu-codigo:/var/www/html
-      - ./php.ini:/usr/local/etc/php/php.ini
-    ports:
-      - "8080:80"
-```
+### 🗃️ phpMyAdmin
+- Acesso: `http://localhost:8081`
+- Servidor: `db`
+- Usuário: `root`
+- Senha: `root`
 
-3. Rode:
+---
+
+## 🚀 Como usar
+
+### 1. Pré-requisitos
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+
+### 2. Subir o ambiente
+
+No terminal, execute:
 
 ```bash
 docker-compose up --build
 ```
 
-## Alternativa: publicar no Docker Hub
+Isso criará e iniciará os containers `php-app`, `mysql-db` e `phpmyadmin`.
+
+---
+
+## 📁 Estrutura do projeto
+
+```
+meu-projeto/
+│
+├── docker-compose.yml
+├── Dockerfile
+├── README.md
+├── src/
+│   └── index.php
+└── docker/
+    └── apache/
+        └── default.conf
+```
+
+---
+
+## 🧪 Testando
+
+Acesse no navegador:  
+- `http://localhost:8080` → Sua aplicação PHP  
+- `http://localhost:8081` → Interface phpMyAdmin
+
+---
+
+## 🛑 Parar os containers
+
+Para parar o ambiente:
 
 ```bash
-docker build -t seu-usuario/php-apache-base:8.3 .
-docker push seu-usuario/php-apache-base:8.3
+docker-compose down
 ```
 
-Depois use a imagem no `docker-compose.yml`:
+---
 
-```yaml
-image: seu-usuario/php-apache-base:8.3
+## ✅ Exemplo simples
+
+O arquivo `src/index.php` exibe uma mensagem simples para testar o ambiente:
+
+```php
+<?php
+echo "Ambiente PHP com Docker funcionando!";
 ```
-✅ Soluções para corrigir as permissões da pasta production
-🔧 1. Ajustar permissões no host (fora do container)
-Se a pasta foi criada com root, você pode ajustar manualmente com:
 
-sudo chown -R $USER:$USER ./production
-Ou, se quiser dar permissão total (não recomendado para produção):
+---
 
-sudo chmod -R 777 ./public
+## ✍️ Autor
 
-✅ Passos para rodar
-
-Crie esse docker-compose.yml na raiz do projeto.
-
-Execute no terminal:
-
-docker-compose up --build
-
-Acesse:
-
-Sua app: http://localhost:8000
-
-phpMyAdmin: http://localhost:8081
-
+Criado por [isaiasTech].  
+Atualizado para utilizar PHP 8.2 com segurança.

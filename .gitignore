@@ -1,8 +1,0 @@
-*.log
-vendor/
-node_modules/
-production/
-public/
-.DS_Store
-.env
-# Ignore build artifacts

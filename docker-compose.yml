@@ -1,41 +1,42 @@
+version: '3.8'
 
 services:
-  apache:
-    image: isaiaspy/php-apache-base  # Usando imagem oficial do PHP com Apache
-    build: .  # Constrói o container usando o Dockerfile local
-    container_name: php-apache
+  app:
+    build: .
+    container_name: php-app
     volumes:
-      - ./public:/var/www/html  # Código da aplicação PHP
-      - ./php.ini:/usr/local/etc/php/php.ini  # Configuração personalizada do PHP
+      - ./src:/var/www/html
+      - ./docker/apache/default.conf:/etc/apache2/sites-available/000-default.conf
     ports:
-      - "8000:80"  # Porta local 8000 acessa o Apache (porta 80) no container
+      - "8080:80"
     depends_on:
-      - db  # Aguarda o banco de dados iniciar
+      - db
 
   db:
-    image: mysql:5.7  # Usando imagem oficial do MySQL 5.7
+    image: mysql:5.7
     container_name: mysql-db
-    restart: always  # Reinicia automaticamente se algo falhar
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root  # Senha do usuário root do MySQL
-      MYSQL_DATABASE: meu_banco  # Nome do banco de dados a ser criado
-      MYSQL_USER: user  # Nome de usuário adicional
-      MYSQL_PASSWORD: senha  # Senha do usuário adicional
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: meu_banco
+      MYSQL_USER: user
+      MYSQL_PASSWORD: senha
     ports:
-      - "3307:3306"
-  # Porta local 3307 conectando ao MySQL
+      - "3308:3306"
     volumes:
-      - dbdata:/var/lib/mysql  # Volume para persistência de dados
+      - db_data:/var/lib/mysql
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin  # Interface web para o MySQL
+    image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     restart: always
     ports:
-      - "8081:80"  # Acesse phpMyAdmin via http://localhost:8081
+      - "8081:80"
     environment:
-      PMA_HOST: db  # Conecta ao serviço "db" (MySQL)
+      PMA_HOST: db
       MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - db
 
 volumes:
-  dbdata:  # Volume nomeado para manter os dados do banco mesmo após reiniciar containers
+  db_data:
