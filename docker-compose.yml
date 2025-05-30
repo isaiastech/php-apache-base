@@ -23,7 +23,7 @@ services:
       MYSQL_PASSWORD: senha  # Senha do usuário adicional
     ports:
       - "3307:3306"
-  # Porta local 3306 conectando ao MySQL
+  # Porta local 3307 conectando ao MySQL
     volumes:
       - dbdata:/var/lib/mysql  # Volume para persistência de dados
 
