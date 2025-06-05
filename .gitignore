@@ -1,0 +1,32 @@
+# Pastas para ignore
+.idea/
+.vscode/
+node_modules/
+app/
+# Arquivos de log
+*.log
+# Arquivos de configuração do sistema
+*.DS_Store  
+
+# Arquivos de cache 
+.cache/
+# Arquivos de backup
+*.bak
+# Arquivos temporários  
+*.tmp
+# Arquivos de compilação
+*.o
+
+# Arquivos de dependências
+package-lock.json
+yarn.lock   
+# Arquivos de configuração do ambiente
+.env
+# Arquivos de banco de dados
+*.sqlite
+
+
+# Arquivos de teste
+*.test.js
+
+
