@@ -1,42 +1,42 @@
-version: '3.8'
 
-services:
-  app:
-    build: .
-    container_name: php-app
+services:  # Aqui definimos os serviços (containers) que serão executados.
+
+  app:  # Serviço principal da aplicação PHP com Apache
+    build: .  # Constrói a imagem com base no Dockerfile localizado na raiz do projeto
+    container_name: php-app  # Nome do contêiner para fácil identificação
     volumes:
-      - ./src:/var/www/html
-      - ./docker/apache/default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./src:/var/www/html  # Mapeia o diretório "src" do host para o diretório raiz do Apache dentro do contêiner
+      - ./docker/apache/default.conf:/etc/apache2/sites-available/000-default.conf  # Substitui o arquivo de configuração padrão do Apache por um personalizado
     ports:
-      - "8080:80"
+      - "${APP_PORT}:80"  # Mapeia a porta definida no .env para a porta 80 do contêiner (acesso HTTP)
     depends_on:
-      - db
+      - db  # Garante que o banco de dados (serviço "db") seja iniciado antes deste contêiner
 
-  db:
-    image: mysql:5.7
-    container_name: mysql-db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: meu_banco
-      MYSQL_USER: user
-      MYSQL_PASSWORD: senha
+  db:  # Serviço do banco de dados MySQL
+    image: mysql:5.7  # Usa a imagem oficial do MySQL versão 5.7 (pode ser substituída por uma mais recente como mysql:8.0)
+    container_name: mysql-db  # Nome do contêiner do banco de dados
+    restart: always  # Reinicia automaticamente o contêiner em caso de falha
+    environment:  # Variáveis de ambiente usadas para configurar o MySQL na inicialização
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Senha do usuário root (vinda do .env)
+      MYSQL_DATABASE: ${MYSQL_DATABASE}            # Nome do banco de dados padrão a ser criado
+      MYSQL_USER: ${MYSQL_USER}                    # Nome do usuário adicional
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}            # Senha do usuário adicional
     ports:
-      - "3308:3306"
+      - "${MYSQL_PORT}:3306"  # Mapeia a porta do host (vinda do .env) para a porta padrão do MySQL
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql  # Volume persistente para armazenar os dados do banco (não se perdem se o contêiner for removido)
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    restart: always
+  phpmyadmin:  # Serviço de interface web para gerenciamento do banco (phpMyAdmin)
+    image: phpmyadmin/phpmyadmin  # Usa a imagem oficial do phpMyAdmin
+    container_name: phpmyadmin  # Nome do contêiner
+    restart: always  # Reinicia automaticamente em caso de falha
     ports:
-      - "8081:80"
+      - "${PHPMYADMIN_PORT}:80"  # Mapeia a porta definida no .env para a porta 80 do contêiner (interface web)
     environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: root
+      PMA_HOST: db  # Informa ao phpMyAdmin que o banco de dados está acessível pelo serviço "db"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Senha do root para autenticação
     depends_on:
-      - db
+      - db  # Garante que o banco de dados esteja disponível antes de iniciar o phpMyAdmin
 
 volumes:
-  db_data:
+  db_data:  # Define um volume nomeado chamado "db_data", usado para persistência dos dados do MySQL

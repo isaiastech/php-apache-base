@@ -4,7 +4,11 @@
 public/
 # Ignore files in the public directory
 /public/*
-envi-example.ini   
+envi-example.ini 
+
+# Ignore files in the root directory
+/.env 
+  
 
 
 

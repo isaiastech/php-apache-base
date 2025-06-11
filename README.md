@@ -36,6 +36,7 @@ Este projeto configura um ambiente de desenvolvimento PHP completo utilizando Do
 - [Docker Compose](https://docs.docker.com/compose/)
 
 ### 2. Subir o ambiente
+``Configurar o arquivo .env
 
 No terminal, execute:
 
