@@ -1,5 +1,5 @@
 # Ignore the app directory
-/app
+./app
 /app/
 public/
 # Ignore files in the public directory
